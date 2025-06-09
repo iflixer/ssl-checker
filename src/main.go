@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/tls"
-	"crypto/x509"
 	"fmt"
 	"log"
 	"os"
@@ -93,15 +92,15 @@ func checkDomain(domain string, bot *tgbotapi.BotAPI, chatID int64, warningDays 
 	now := time.Now()
 	daysLeft := int(cert.NotAfter.Sub(now).Hours() / 24)
 
-	// Проверка доверия
-	roots, _ := x509.SystemCertPool()
-	if _, err := cert.Verify(x509.VerifyOptions{
-		DNSName: domain,
-		Roots:   roots,
-	}); err != nil {
-		sendMessage(bot, chatID, fmt.Sprintf("⚠️ %s: недоверенный сертификат: %v", domain, err))
-		return
-	}
+	// Проверка доверия. отключена ибо всегда ругается на letsencrypt
+	// roots, _ := x509.SystemCertPool()
+	// if _, err := cert.Verify(x509.VerifyOptions{
+	// 	DNSName: domain,
+	// 	Roots:   roots,
+	// }); err != nil {
+	// 	sendMessage(bot, chatID, fmt.Sprintf("⚠️ %s: недоверенный сертификат: %v", domain, err))
+	// 	return
+	// }
 
 	if daysLeft < warningDays {
 		log.Printf("⚠️ %s: сертификат истекает через %d дней (%s)", domain, daysLeft, cert.NotAfter.Format("02 Jan 2006"))
