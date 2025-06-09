@@ -7,8 +7,8 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"ssl-checker/src/database"
-	"ssl-checker/src/helper"
+	"ssl-checker/database"
+	"ssl-checker/helper"
 	"strings"
 	"time"
 
