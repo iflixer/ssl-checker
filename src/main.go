@@ -48,19 +48,19 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		log.Println("dbService OK")
+		log.Println("✅ dbService OK")
 	}
 
 	bot, err := tgbotapi.NewBotAPI(telegramToken)
 	if err != nil {
-		log.Fatal("Telegram error:", err)
+		log.Fatal("❌ Telegram error:", err)
 	}
 
 	var domains []*Domain
 	for {
 		err = dbService.DB.Raw(mysqlDomainsQuery).Find(&domains).Error
 		if err != nil {
-			log.Println("Ошибка при получении доменов:", err)
+			log.Println("❌ Ошибка при получении доменов:", err)
 			sendMessage(bot, chatID, fmt.Sprintf("❌ Ошибка при получении доменов: %v", err))
 		} else {
 			for _, domain := range domains {
@@ -77,6 +77,7 @@ func checkDomain(domain string, bot *tgbotapi.BotAPI, chatID int64, warningDays 
 		InsecureSkipVerify: true,
 	})
 	if err != nil {
+		log.Printf("❌ Ошибка подключения к %s: %v", domain, err)
 		sendMessage(bot, chatID, fmt.Sprintf("❌ Ошибка подключения к %s: %v", domain, err))
 		return
 	}
@@ -84,6 +85,7 @@ func checkDomain(domain string, bot *tgbotapi.BotAPI, chatID int64, warningDays 
 
 	state := conn.ConnectionState()
 	if len(state.PeerCertificates) == 0 {
+		log.Printf("❌ Нет сертификатов у %s", domain)
 		sendMessage(bot, chatID, fmt.Sprintf("❌ Нет сертификатов у %s", domain))
 		return
 	}

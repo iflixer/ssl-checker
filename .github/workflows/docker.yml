@@ -41,16 +41,13 @@ jobs:
       - name: Deploy to Docker Swarm
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.DEPLOY_SSH_HOST }}
+          host: ${{ secrets.DEPLOY_SSH_HOST_BRAZIL }}
           port: 6222
           username: ${{ secrets.DEPLOY_SSH_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             set -e
             cd /home/ivanezko/brazil && ./deploy.sh brazil/ssl-checker.yml | tee deploy.log
-
-            # docker service update --image ${{ secrets.DOCKERHUB_USERNAME }}/cis-telegram:latest myapp_service || \
-            # docker stack deploy -c docker-compose.yml myapp
 
       - name: Notify Telegram
         if: success()
