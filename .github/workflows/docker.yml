@@ -44,7 +44,7 @@ jobs:
           host: ${{ secrets.DEPLOY_SSH_HOST_BRAZIL }}
           port: 6222
           username: ${{ secrets.DEPLOY_SSH_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          key: ${{ secrets.DEPLOY_SSH_KEY_BRAZIL }}
           script: |
             set -e
             cd /home/ivanezko/brazil-swarm && ./deploy.sh brazil/ssl-checker.yml | tee deploy.log
