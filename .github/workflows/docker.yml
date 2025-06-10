@@ -47,7 +47,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             set -e
-            cd /home/ivanezko/brazil && ./deploy.sh brazil/ssl-checker.yml | tee deploy.log
+            cd /home/ivanezko/brazil-swarm && ./deploy.sh brazil/ssl-checker.yml | tee deploy.log
 
       - name: Notify Telegram
         if: success()
