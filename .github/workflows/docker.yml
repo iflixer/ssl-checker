@@ -38,7 +38,7 @@ jobs:
             --build-arg SOURCE_TAG=${{ steps.vars.outputs.tag }} \
             . | tee build.log
 
-      - name: Deploy to Docker Swarm
+      - name: Deploy to BRAZIL Docker Swarm
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DEPLOY_SSH_HOST_BRAZIL }}
@@ -48,6 +48,18 @@ jobs:
           script: |
             set -e
             cd /home/ivanezko/brazil-swarm && ./deploy.sh brazil/ssl-checker.yml | tee deploy.log
+
+      - name: Deploy to INDIA Docker Swarm
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_SSH_HOST_INDIA }}
+          port: 6222
+          username: ${{ secrets.DEPLOY_SSH_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY_INDIA }}
+          script: |
+            set -e
+            cd /home/ivanezko/india-swarm && ./deploy.sh india/ssl-checker.yml | tee deploy.log
+
 
       - name: Notify Telegram
         if: success()
